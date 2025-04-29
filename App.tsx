@@ -2,12 +2,15 @@ import { ScreenContent } from 'components/ScreenContent';
 import { StatusBar } from 'expo-status-bar';
 
 import './global.css';
+import SignupScreen from 'screens/signup';
+import { SafeAreaView } from 'react-native';
 
 export default function App() {
   return (
     <>
-      <ScreenContent title="Home" path="App.tsx" />
-      <StatusBar style="auto" />
+      <SafeAreaView>
+      <SignupScreen />
+      </SafeAreaView>
     </>
   );
 }
