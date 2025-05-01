@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Button } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { MaskedTextInput } from 'react-native-mask-text';
 import * as ImagePicker from 'expo-image-picker';
@@ -13,6 +13,10 @@ const SignupScreen = () => {
       password: '',
       phoneNumber: '',
       profile_image: '',
+      coordinate: {
+        latitude: 0,
+        longitude: 0,
+      }
     },
   });
 
@@ -29,14 +33,14 @@ const SignupScreen = () => {
     setValue('profile_image', uri);
   };
 
-  const { profile_image } = watch();
+  const { profile_image, coordinate } = watch();
 
   const onSubmit = (data: any) => {
     console.log(data);
   };
 
   return (
-    <View className="gap-3 p-6">
+    <View className="gap-3 p-6 flex-1">
       <View className="flex-row gap-3">
         <TouchableOpacity
           onPress={selectImage}
@@ -117,9 +121,12 @@ const SignupScreen = () => {
           )}
         />
       </View>
-
-      <MapSheet />
-
+      <View>
+        <Text>latitude: {coordinate?.latitude}</Text>
+        <Text>longitude: {coordinate?.longitude}</Text>
+      </View>
+      <Button onPress={handleSubmit(onSubmit)} title='Submit'/>
+      <MapSheet onMapPress={(coordinate)=> {setValue('coordinate', coordinate)}}/>
     </View>
   );
 };

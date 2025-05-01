@@ -1,40 +1,50 @@
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import React, { useCallback, useRef } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import MapView from 'react-native-maps';
 
+const MapSheet = ({onMapPress}: {onMapPress: (coordinate: {latitude: number, longitude: number}) => void}) => {
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
-const MapSheet = () => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
+
   return (
-    <View>
-      <GestureHandlerRootView style={styles.container}>
-        <BottomSheetModalProvider>
-          <Button onPress={handlePresentModalPress} title="Present Modal" color="black" />
-          <BottomSheetModal ref={bottomSheetModalRef} onChange={handleSheetChanges}>
-            <BottomSheetView style={styles.contentContainer}>
-              <Text>Awesome 🎉</Text>
-            </BottomSheetView>
-          </BottomSheetModal>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </View>
+    <GestureHandlerRootView style={styles.container}>
+      <Button
+        onPress={() => {
+          bottomSheetRef.current?.expand();
+        }}
+        title="Open Map"
+      />
+      <BottomSheet
+        ref={bottomSheetRef}
+        onChange={handleSheetChanges}
+        index={-1}
+        snapPoints={['50%', '90%']}
+        enablePanDownToClose>
+        <BottomSheetView style={styles.contentContainer}>
+          <View className="h-full w-full flex-1">
+            <MapView
+            onPress={(e) => {
+              onMapPress(e.nativeEvent.coordinate);}}
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    justifyContent: 'center',
-    backgroundColor: 'grey',
   },
   contentContainer: {
     flex: 1,
