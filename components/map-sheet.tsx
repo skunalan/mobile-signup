@@ -23,7 +23,7 @@ const MapSheet = ({onMapPress}: {onMapPress: (coordinate: {latitude: number, lon
         ref={bottomSheetRef}
         onChange={handleSheetChanges}
         index={-1}
-        snapPoints={['50%', '90%']}
+        snapPoints={[200, '50%']}
         enablePanDownToClose>
         <BottomSheetView style={styles.contentContainer}>
           <View className="h-full w-full flex-1">
